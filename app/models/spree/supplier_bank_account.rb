@@ -18,7 +18,7 @@ module Spree
     before_validation :balanced_api_call, on: :create
 
     def verification_status
-      verified ? Spree.t(:verified) : Spree.t(:unverified)
+      verified ? I18n.t(:verified) : I18n.t(:unverified)
     end
 
     private
