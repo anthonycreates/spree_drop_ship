@@ -9,4 +9,10 @@ group :development, :test do
   gem 'spree_related_products', github: 'spree/spree_related_products'
 end
 
+group :development do
+  gem 'jazz_hands'
+  gem 'guard-rspec'
+  gem 'guard-spork'
+end
+
 gemspec
