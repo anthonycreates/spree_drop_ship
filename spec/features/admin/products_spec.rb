@@ -95,6 +95,43 @@ describe 'Admin - Products', js: true do
       end
     end
 
+    context "listing prototypes" do
+      it "should be able to list existing prototypes" do
+        create(:property, :name => "model", :presentation => "Model")
+        create(:property, :name => "brand", :presentation => "Brand")
+        create(:property, :name => "shirt_fabric", :presentation => "Fabric")
+        create(:property, :name => "shirt_sleeve_length", :presentation => "Sleeve")
+        create(:property, :name => "mug_type", :presentation => "Type")
+        create(:property, :name => "bag_type", :presentation => "Type")
+        create(:property, :name => "manufacturer", :presentation => "Manufacturer")
+        create(:property, :name => "bag_size", :presentation => "Size")
+        create(:property, :name => "mug_size", :presentation => "Size")
+        create(:property, :name => "gender", :presentation => "Gender")
+        create(:property, :name => "shirt_fit", :presentation => "Fit")
+        create(:property, :name => "bag_material", :presentation => "Material")
+        create(:property, :name => "shirt_type", :presentation => "Type")
+        p = create(:prototype, :name => "Shirt")
+        %w( brand gender manufacturer model shirt_fabric shirt_fit shirt_sleeve_length shirt_type ).each do |prop|
+          p.properties << Spree::Property.find_by_name(prop)
+        end
+        p = create(:prototype, :name => "Mug")
+        %w( mug_size mug_type ).each do |prop|
+          p.properties << Spree::Property.find_by_name(prop)
+        end
+        p = create(:prototype, :name => "Bag")
+        %w( bag_type bag_material ).each do |prop|
+          p.properties << Spree::Property.find_by_name(prop)
+        end
+
+        visit spree.admin_products_path
+        click_link "Prototypes"
+
+        within_row(1) { column_text(1).should == "Shirt" }
+        within_row(2) { column_text(1).should == "Mug" }
+        within_row(3) { column_text(1).should == "Bag" }
+      end
+    end
+
     context "creating a new product from a prototype" do
       def build_option_type_with_values(name, values)
         ot = create(:option_type, :name => name)
